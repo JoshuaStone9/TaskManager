@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WorkProject.Data;
+using TaskManager.Data;
 
-namespace WorkProject.Controllers
+namespace TaskManager.Controllers
 {
     public class HomeController : Controller
     {
@@ -15,10 +15,13 @@ namespace WorkProject.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var tasks = await _context.Tasks.ToListAsync();
+            var assignments = await _context.TaskAssignments
+                .Include(ta => ta.Task)
+                .Include(ta => ta.Employee)
+                .ToListAsync();
             var employees = await _context.Employees.ToListAsync();
             
-            ViewBag.Tasks = tasks;
+            ViewBag.Assignments = assignments;
             ViewBag.Employees = employees;
             
             return View();
@@ -27,37 +30,60 @@ namespace WorkProject.Controllers
         public async Task<IActionResult> EmployeeTasks(int id)
         {
             var employee = await _context.Employees.FindAsync(id);
-            var tasks = await _context.Tasks.Where(t => t.AssignedToId == id).ToListAsync();
+            var assignments = await _context.TaskAssignments
+                .Include(ta => ta.Task)
+                .Where(ta => ta.EmployeeId == id)
+                .ToListAsync();
             
             ViewBag.Employee = employee;
-            ViewBag.Tasks = tasks;
+            ViewBag.Assignments = assignments;
             
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateTaskStatus(int id, string status)
+        public async Task<IActionResult> UpdateTaskStatus(int id, string status, int? employeeId = null)
         {
-            var task = await _context.Tasks.FindAsync(id);
-            if (task != null)
+            var assignment = await _context.TaskAssignments.FindAsync(id);
+            if (assignment != null)
             {
-                task.Status = status;
+                assignment.Status = status;
                 await _context.SaveChangesAsync();
             }
+            
+            if (employeeId.HasValue)
+                return RedirectToAction("EmployeeTasks", new { id = employeeId.Value });
+            
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTask(string title, int assignedToId)
+        public async Task<IActionResult> CreateTask(string title, List<int> assignedToId)
         {
-            var task = new WorkTask
+            var task = new TaskItem
             {
                 Title = title,
-                Status = "Not Started",
-                AssignedToId = assignedToId
+                Description = ""
             };
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
+            
+            // Create assignments for each employee
+            if (assignedToId != null && assignedToId.Count > 0)
+            {
+                foreach (var employeeId in assignedToId)
+                {
+                    var assignment = new TaskAssignment
+                    {
+                        TaskId = task.Id,
+                        EmployeeId = employeeId,
+                        Status = "Not Started"
+                    };
+                    _context.TaskAssignments.Add(assignment);
+                }
+                await _context.SaveChangesAsync();
+            }
+            
             return RedirectToAction("Index");
         }
     }

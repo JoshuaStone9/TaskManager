@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using WorkProject;
+using TaskManager;
 
-namespace WorkProject.Controllers
+namespace TaskManager.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

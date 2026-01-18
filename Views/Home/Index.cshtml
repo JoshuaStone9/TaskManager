@@ -15,38 +15,37 @@
 }
 
 <div class="section">
-    <h3>All Tasks Overview</h3>
+    <h3>All Task Assignments Overview</h3>
     <div class="task-grid">
-        @if (ViewBag.Tasks != null)
+        @if (ViewBag.Assignments != null)
         {
-            @foreach (var task in ViewBag.Tasks)
+            @foreach (var assignment in ViewBag.Assignments)
             {
-                var employee = ((List<WorkProject.Employee>)ViewBag.Employees).Find(e => e.Id == task.AssignedToId);
-                var statusClass = task.Status.Replace(" ", "-").ToLower();
+                var statusClass = assignment.Status.Replace(" ", "-").ToLower();
                 
                 <div class="task-card @statusClass">
                     <div class="task-header">
-                        <h4>@task.Title</h4>
-                        <span class="status-badge @statusClass">@task.Status</span>
+                        <h4>@assignment.Task.Title</h4>
+                        <span class="status-badge @statusClass">@assignment.Status</span>
                     </div>
                     <div class="task-body">
                         <p class="assigned-to">
                             <strong>Assigned to:</strong> 
-                            <a href="/Home/EmployeeTasks/@employee?.Id">@employee?.Name</a>
+                            <a href="/Home/EmployeeTasks/@assignment.Employee.Id">@assignment.Employee.Name</a>
                         </p>
                         <div class="task-actions">
                             <form method="post" action="/Home/UpdateTaskStatus" style="display: inline;">
-                                <input type="hidden" name="id" value="@task.Id" />
+                                <input type="hidden" name="id" value="@assignment.Id" />
                                 <input type="hidden" name="status" value="In Progress" />
                                 <button type="submit" class="btn-small btn-warning">Start</button>
                             </form>
                             <form method="post" action="/Home/UpdateTaskStatus" style="display: inline;">
-                                <input type="hidden" name="id" value="@task.Id" />
+                                <input type="hidden" name="id" value="@assignment.Id" />
                                 <input type="hidden" name="status" value="Completed" />
                                 <button type="submit" class="btn-small btn-success">Complete</button>
                             </form>
                             <form method="post" action="/Home/UpdateTaskStatus" style="display: inline;">
-                                <input type="hidden" name="id" value="@task.Id" />
+                                <input type="hidden" name="id" value="@assignment.Id" />
                                 <input type="hidden" name="status" value="Not Started" />
                                 <button type="submit" class="btn-small btn-secondary">Reset</button>
                             </form>
@@ -61,11 +60,11 @@
 <div class="section">
     <h3>Team Members</h3>
     <div class="employee-grid">
-        @if (ViewBag.Employees != null)
+        @if (ViewBag.Employees != null && ViewBag.Assignments != null)
         {
             @foreach (var employee in ViewBag.Employees)
             {
-                var taskCount = ((List<WorkTask>)ViewBag.Tasks).Count(t => t.AssignedToId == employee.Id);
+                var taskCount = ((List<TaskManager.TaskAssignment>)ViewBag.Assignments).Count(a => a.EmployeeId == employee.Id);
                 
                 <div class="employee-card">
                     <div class="employee-icon"></div>

@@ -4,7 +4,7 @@
       "Id": 1,
       "Title": "Grind and Dose",
       "Status": "Not Started",
-      "AssignedToId": 1001
+      "AssignedToId": [1001, 1002, 1003]
     },
     {
       "Id": 2,

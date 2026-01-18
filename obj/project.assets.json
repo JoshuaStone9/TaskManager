@@ -2405,9 +2405,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\josh\\Documents\\GitHub\\TaskManager\\WorkProject.csproj",
-      "projectName": "WorkProject",
-      "projectPath": "C:\\Users\\josh\\Documents\\GitHub\\TaskManager\\WorkProject.csproj",
+      "projectUniqueName": "C:\\Users\\josh\\Documents\\GitHub\\TaskManager\\TaskManager.csproj",
+      "projectName": "TaskManager",
+      "projectPath": "C:\\Users\\josh\\Documents\\GitHub\\TaskManager\\TaskManager.csproj",
       "packagesPath": "C:\\Users\\josh\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\josh\\Documents\\GitHub\\TaskManager\\obj\\",
       "projectStyle": "PackageReference",

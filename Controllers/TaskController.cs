@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
-namespace WorkProject.Controllers
+namespace TaskManager.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -24,7 +24,8 @@ namespace WorkProject.Controllers
                     task.Title,
                     task.Status,
                     AssignedToId = task.AssignedToId,
-                    AssignedToName = employeeData?.Employees.Find(e => e.Id == task.AssignedToId)?.Name ?? "Unknown"
+                    AssignedToNames = task.AssignedToId.Select(id => 
+                        employeeData?.Employees.Find(e => e.Id == id)?.Name ?? "Unknown").ToList()
                 });
                 
                 return Ok(tasksWithEmployees);
@@ -51,7 +52,7 @@ namespace WorkProject.Controllers
                     return NotFound($"Employee with ID {employeeId} not found.");
                 
                 var employeeTasks = taskData?.Tasks
-                    .Where(t => t.AssignedToId == employeeId)
+                    .Where(t => t.AssignedToId.Contains(employeeId))
                     .Select(task => new
                     {
                         task.Id,

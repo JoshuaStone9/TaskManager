@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace WorkProject
+namespace TaskManager
 {
     public class Employee
     {

@@ -1,6 +1,6 @@
 @{
     ViewData["Title"] = "Employee Tasks";
-    var employee = ViewBag.Employee as WorkProject.Employee;
+    var employee = ViewBag.Employee as TaskManager.Employee;
 }
 
 <div class="back-link">
@@ -19,21 +19,40 @@
 
     <div class="section">
         <h3>Assigned Tasks</h3>
-        
-        @if (ViewBag.Tasks != null && ((List<WorkTask>)ViewBag.Tasks).Count > 0)
+        <p>Total Tasks: @((ViewBag.Assignments != null) ? ((List<TaskManager.TaskAssignment>)ViewBag.Assignments).Count : 0)</p>
+        <br>
+        @if (ViewBag.Assignments != null && ((List<TaskManager.TaskAssignment>)ViewBag.Assignments).Count > 0)
         {
             <div class="task-list">
-                @foreach (var task in ViewBag.Tasks)
+                @foreach (var assignment in ViewBag.Assignments)
                 {
-                    var statusClass = task.Status.Replace(" ", "-").ToLower();
+                    var statusClass = assignment.Status.Replace(" ", "-").ToLower();
                     
                     <div class="task-item @statusClass">
                         <div class="task-content">
-                            <h4>@task.Title</h4>
-                            <span class="status-badge @statusClass">@task.Status</span>
+                            <h4>@assignment.Task.Title</h4>
+                            <form method="post" action="/Home/UpdateTaskStatus">
+                                <input type="hidden" name="id" value="@assignment.Id" />
+                                <input type="hidden" name="status" value="In Progress" />
+                                <input type="hidden" name="employeeId" value="@employee.Id" />
+                                <button type="submit" class="btn-small btn-warning">Start</button>
+                            </form>
+                            <form method="post" action="/Home/UpdateTaskStatus" style="display: inline;">
+                                <input type="hidden" name="id" value="@assignment.Id" />
+                                <input type="hidden" name="status" value="Completed" />
+                                <input type="hidden" name="employeeId" value="@employee.Id" />
+                                <button type="submit" class="btn-small btn-success">Complete</button>
+                            </form>
+                            <form method="post" action="/Home/UpdateTaskStatus" style="display: inline;">
+                                <input type="hidden" name="id" value="@assignment.Id" />
+                                <input type="hidden" name="status" value="Not Started" />
+                                <input type="hidden" name="employeeId" value="@employee.Id" />
+                                <button type="submit" class="btn-small btn-secondary">Reset</button>
+                            </form>
+                            <span class="status-badge @statusClass">@assignment.Status</span>
                         </div>
                         <div class="task-meta">
-                            <span>Task ID: @task.Id</span>
+                            <span>Task ID: @assignment.Task.Id | Assignment ID: @assignment.Id</span>
                         </div>
                     </div>
                 }
