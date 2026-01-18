@@ -1,0 +1,40 @@
+{
+  "Tasks": [
+    {
+      "Id": 1,
+      "Title": "Grind and Dose",
+      "Status": "Not Started",
+      "AssignedToId": 1001
+    },
+    {
+      "Id": 2,
+      "Title": "Milk Delivery",
+      "Status": "Not Started",
+      "AssignedToId": 1002
+    },
+    {
+      "Id": 3,
+      "Title": "Food Delivery",
+      "Status": "Not Started",
+      "AssignedToId": 1003
+    },
+    {
+      "Id": 4,
+      "Title": "General Coffee Knowledge",
+      "Status": "Not Started",
+      "AssignedToId": 1004
+    },
+    {
+      "Id": 5,
+      "Title": "Espresso Check",
+      "Status": "Not Started",
+      "AssignedToId": 1005
+    },
+    {
+      "Id": 6,
+      "Title": "Moments of Heart",
+      "Status": "Not Started",
+      "AssignedToId": 1001
+    }
+  ]
+}

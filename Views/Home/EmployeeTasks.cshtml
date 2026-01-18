@@ -1,0 +1,55 @@
+@{
+    ViewData["Title"] = "Employee Tasks";
+    var employee = ViewBag.Employee as WorkProject.Employee;
+}
+
+<div class="back-link">
+    <a href="/">← Back to Dashboard</a>
+</div>
+
+@if (employee != null)
+{
+    <div class="employee-header">
+        <div class="employee-avatar"></div>
+        <div>
+            <h2>@employee.Name</h2>
+            <p class="employee-id">Employee ID: @employee.Id</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Assigned Tasks</h3>
+        
+        @if (ViewBag.Tasks != null && ((List<WorkTask>)ViewBag.Tasks).Count > 0)
+        {
+            <div class="task-list">
+                @foreach (var task in ViewBag.Tasks)
+                {
+                    var statusClass = task.Status.Replace(" ", "-").ToLower();
+                    
+                    <div class="task-item @statusClass">
+                        <div class="task-content">
+                            <h4>@task.Title</h4>
+                            <span class="status-badge @statusClass">@task.Status</span>
+                        </div>
+                        <div class="task-meta">
+                            <span>Task ID: @task.Id</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <p>No tasks assigned yet.</p>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="error">
+        <p>Employee not found.</p>
+    </div>
+}
