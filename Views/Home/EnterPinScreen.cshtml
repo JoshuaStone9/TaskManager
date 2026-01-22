@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "Admin Access";
+}
+
+<div class="pin-screen-container">
+    <div class="pin-screen-card">
+        <div class="lock-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+        </div>
+        
+        <h2>Admin Dashboard</h2>
+        <p class="pin-subtitle">Enter PIN to access admin controls</p>
+        
+        @if (ViewBag.Error != null)
+        {
+            <div class="pin-error">
+                <p>@ViewBag.Error</p>
+            </div>
+        }
+        
+        <form method="post" action="/Home/VerifyPin" class="pin-form">
+            <div class="pin-input-container">
+                <input type="password" 
+                       name="pin" 
+                       id="pinInput" 
+                       class="pin-input" 
+                       placeholder="Enter PIN" 
+                       maxlength="6" 
+                       required 
+                       autofocus />
+            </div>
+            
+            <button type="submit" class="btn-pin-submit">
+                <span>Access Dashboard</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </button>
+        </form>
+        
+        <div class="pin-footer">
+            <a href="/" class="back-to-home">← Back to Main Dashboard</a>
+        </div>
+    </div>
+</div>

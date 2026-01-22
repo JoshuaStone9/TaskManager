@@ -1,0 +1,131 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="back-link">
+    <a href="/">← Back to Main Dashboard</a>
+</div>
+
+<div class="admin-header">
+    <h2>Admin Dashboard</h2>
+    <p>Manage tasks and employees</p>
+</div>
+
+<div class="section">
+    <h3>Add New Employee</h3>
+    <form method="post" action="/Home/AddEmployee" class="admin-form">
+        <input type="text" name="name" placeholder="Employee Name" required />
+        <button type="submit" class="btn btn-primary">Add Employee</button>
+    </form>
+</div>
+
+<div class="section">
+    <h3>All Employees</h3>
+    @if (ViewBag.Employees != null && ((List<TaskManager.Employee>)ViewBag.Employees).Count > 0)
+    {
+        <div class="employee-grid">
+            @foreach (var employee in ViewBag.Employees)
+            {
+                <div class="employee-card">
+                    <div class="employee-icon"></div>
+                    <h4>@employee.Name</h4>
+                    <p class="employee-id">ID: @employee.Id</p>
+                    <div class="admin-actions">
+                        <a href="/Home/EmployeeTasks/@employee.Id" class="btn btn-small">View Tasks</a>
+                        <a href="/Home/EditEmployee/@employee.Id" class="btn btn-small">Edit</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No employees found.</p>
+    }
+</div>
+
+<div class="section">
+    <h3>Create New Task</h3>
+    <form method="post" action="/Home/CreateTask" class="admin-form">
+        <input type="text" name="title" placeholder="Task Title" required />
+        <div class="employee-select">
+            <label>Assign to:</label>
+            @if (ViewBag.Employees != null)
+            {
+                @foreach (var employee in ViewBag.Employees)
+                {
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="assignedToId" value="@employee.Id" id="emp_@employee.Id" />
+                        <label for="emp_@employee.Id">@employee.Name</label>
+                    </div>
+                }
+            }
+        </div>
+        <button type="submit" class="btn btn-primary">Create Task</button>
+    </form>
+</div>
+
+<div class="section">
+    <h3>All Tasks</h3>
+    @if (ViewBag.Tasks != null && ((List<TaskManager.TaskItem>)ViewBag.Tasks).Count > 0)
+    {
+        <div class="task-grid">
+            @foreach (var task in ViewBag.Tasks)
+            {
+                <div class="task-card">
+                    <div class="task-header">
+                        <h4>@task.Title</h4>
+                    </div>
+                    <div class="task-body">
+                        <p><strong>Assigned to:</strong></p>
+                        @if (task.Assignments != null && task.Assignments.Count > 0)
+                        {
+                            <ul class="assignment-list">
+                                @foreach (var assignment in task.Assignments)
+                                {
+                                    <li>@assignment.Employee.Name - <span class="status-badge @assignment.Status.Replace(" ", "-").ToLower()">@assignment.Status</span></li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p>No assignments</p>
+                        }
+                        <div class="task-actions">
+                            <form method="post" action="/Home/DeleteTask" style="display: inline;">
+                                <input type="hidden" name="id" value="@task.Id" />
+                                <button type="submit" class="btn-small btn-danger" onclick="return confirm('Delete this task and all assignments?');">Delete Task</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No tasks found.</p>
+    }
+</div>
+
+<div class="section">
+    <h3 style="color: #dc2626;">Delete Employee</h3>
+    <p style="color: #666; margin-bottom: 1rem;">⚠️ Warning: Deleting an employee will remove all their task assignments.</p>
+    @if (ViewBag.Employees != null && ((List<TaskManager.Employee>)ViewBag.Employees).Count > 0)
+    {
+        <form method="post" action="/Home/DeleteEmployee" class="admin-form">
+            <select name="id" required style="padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; width: 100%; max-width: 400px; margin-bottom: 1rem;">
+                <option value="">Select employee to delete...</option>
+                @foreach (var employee in ViewBag.Employees)
+                {
+                    <option value="@employee.Id">@employee.Name (ID: @employee.Id)</option>
+                }
+            </select>
+            <button type="submit" class="btn-small btn-danger" onclick="return confirm('Are you sure you want to delete this employee? This will remove all their task assignments and cannot be undone.');" style="padding: 0.75rem 1.5rem; font-size: 1rem;">Delete Employee</button>
+        </form>
+    }
+    else
+    {
+        <p>No employees to delete.</p>
+    }
+</div>

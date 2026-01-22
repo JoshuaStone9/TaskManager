@@ -136,7 +136,6 @@ C:\Users\josh\Documents\GitHub\TaskManager\obj\Debug\net10.0\rjimswa.dswa.cache.
 C:\Users\josh\Documents\GitHub\TaskManager\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\josh\Documents\GitHub\TaskManager\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
 C:\Users\josh\Documents\GitHub\TaskManager\obj\Debug\net10.0\scopedcss\bundle\TaskManager.styles.css
-C:\Users\josh\Documents\GitHub\TaskManager\obj\Debug\net10.0\compressed\x9hx9mvgyi-{0}-45m3j5gu1a-45m3j5gu1a.gz
 C:\Users\josh\Documents\GitHub\TaskManager\obj\Debug\net10.0\staticwebassets.build.json
 C:\Users\josh\Documents\GitHub\TaskManager\obj\Debug\net10.0\staticwebassets.build.json.cache
 C:\Users\josh\Documents\GitHub\TaskManager\obj\Debug\net10.0\staticwebassets.development.json
@@ -148,3 +147,4 @@ C:\Users\josh\Documents\GitHub\TaskManager\obj\Debug\net10.0\refint\TaskManager.
 C:\Users\josh\Documents\GitHub\TaskManager\obj\Debug\net10.0\TaskManager.pdb
 C:\Users\josh\Documents\GitHub\TaskManager\obj\Debug\net10.0\TaskManager.genruntimeconfig.cache
 C:\Users\josh\Documents\GitHub\TaskManager\obj\Debug\net10.0\ref\TaskManager.dll
+C:\Users\josh\Documents\GitHub\TaskManager\obj\Debug\net10.0\compressed\x9hx9mvgyi-{0}-i2jissny1w-i2jissny1w.gz

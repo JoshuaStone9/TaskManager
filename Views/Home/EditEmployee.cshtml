@@ -1,0 +1,82 @@
+@{
+    ViewData["Title"] = "Edit Employee";
+    var employee = ViewBag.Employee as TaskManager.Employee;
+}
+
+<div class="back-link">
+    <a href="/Home/AdminDashboard">← Back to Admin Dashboard</a>
+</div>
+
+@if (employee != null)
+{
+    <div class="admin-header">
+        <h2>Edit Employee: @employee.Name</h2>
+        <p>ID: @employee.Id</p>
+    </div>
+
+    <div class="section">
+        <h3>Update Employee Name</h3>
+        <form method="post" action="/Home/UpdateEmployee" class="admin-form">
+            <input type="hidden" name="id" value="@employee.Id" />
+            <input type="text" name="name" value="@employee.Name" required />
+            <button type="submit" class="btn btn-primary">Update Name</button>
+        </form>
+    </div>
+
+    <div class="section">
+        <h3>Current Task Assignments</h3>
+        @if (ViewBag.EmployeeAssignments != null && ((List<TaskManager.TaskAssignment>)ViewBag.EmployeeAssignments).Count > 0)
+        {
+            <div class="task-list">
+                @foreach (var assignment in ViewBag.EmployeeAssignments)
+                {
+                    var statusClass = assignment.Status.Replace(" ", "-").ToLower();
+                    
+                    <div class="task-item @statusClass">
+                        <div class="task-content">
+                            <h4>@assignment.Task.Title</h4>
+                            <span class="status-badge @statusClass">@assignment.Status</span>
+                            <form method="post" action="/Home/RemoveTaskFromEmployee" style="display: inline;">
+                                <input type="hidden" name="assignmentId" value="@assignment.Id" />
+                                <input type="hidden" name="employeeId" value="@employee.Id" />
+                                <button type="submit" class="btn-small btn-danger" onclick="return confirm('Remove this task assignment?');">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p>No tasks assigned yet.</p>
+        }
+    </div>
+
+    <div class="section">
+        <h3>Assign New Task</h3>
+        @if (ViewBag.AllTasks != null && ((List<TaskManager.TaskItem>)ViewBag.AllTasks).Count > 0)
+        {
+            <form method="post" action="/Home/AssignTaskToEmployee" class="admin-form">
+                <input type="hidden" name="employeeId" value="@employee.Id" />
+                <select name="taskId" required>
+                    <option value="">Select a task...</option>
+                    @foreach (var task in ViewBag.AllTasks)
+                    {
+                        <option value="@task.Id">@task.Title (ID: @task.Id)</option>
+                    }
+                </select>
+                <button type="submit" class="btn btn-primary">Assign Task</button>
+            </form>
+        }
+        else
+        {
+            <p>No tasks available. Create tasks first in the Admin Dashboard.</p>
+        }
+    </div>
+}
+else
+{
+    <div class="error">
+        <p>Employee not found.</p>
+    </div>
+}
