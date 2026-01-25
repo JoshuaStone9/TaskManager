@@ -121,7 +121,7 @@ namespace TaskManager.Controllers
         [HttpPost]
         public IActionResult VerifyPin(string pin)
         {
-            const string ADMIN_PIN = "1234"; // Change this to your desired PIN
+            string ADMIN_PIN = Environment.GetEnvironmentVariable("ADMIN_PIN") ?? "1234";
             
             if (pin == ADMIN_PIN)
             {

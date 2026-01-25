@@ -1,6 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManager.Data;
 
+// Load environment variables from .env file
+var root = Directory.GetCurrentDirectory();
+var dotenv = Path.Combine(root, ".env");
+if (File.Exists(dotenv))
+{
+    foreach (var line in File.ReadAllLines(dotenv))
+    {
+        if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#"))
+            continue;
+
+        var parts = line.Split('=', 2);
+        if (parts.Length == 2)
+        {
+            Environment.SetEnvironmentVariable(parts[0].Trim(), parts[1].Trim());
+        }
+    }
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
