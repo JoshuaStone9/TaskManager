@@ -2,7 +2,24 @@
 
 All notable changes to the Coffee Shop Task Manager project will be documented in this file.
 
-## [1.2.0] - 2026-01-25
+## [1.2.1] - 25/01/2026
+
+### Added
+- Environment variable support for sensitive configuration
+- .env file for secure PIN storage (excluded from git)
+- .gitignore file to exclude sensitive files and build artifacts from version control
+
+### Changed
+- ADMIN_PIN now retrieved from environment variables instead of hardcoded values
+- Updated Program.cs to load and parse .env file on startup
+
+### Technical Details
+- Implemented .env file parsing in Program.cs for environment variable loading
+- Modified Verify Pin method to read ADMIN_PIN from environment variables with fallback to "1234"
+
+---
+
+## [1.2.0] - 20/01/2026
 
 ### Added
 - **Admin Dashboard with PIN Authentication**
@@ -66,7 +83,7 @@ All notable changes to the Coffee Shop Task Manager project will be documented i
 
 ---
 
-## [1.1.0] - 2026-01-22
+## [1.1.0] - 22/01/2026
 
 ### Added
 - Initial employee and task management system
@@ -82,7 +99,7 @@ All notable changes to the Coffee Shop Task Manager project will be documented i
 
 ---
 
-## [1.0.0] - 2026-01-20
+## [1.0.0] - 20/01/2026
 
 ### Added
 - Project initialization
