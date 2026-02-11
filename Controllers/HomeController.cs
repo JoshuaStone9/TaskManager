@@ -40,7 +40,7 @@ namespace TaskManager.Controllers
                 .Include(ta => ta.Task)
                 .Where(ta => ta.EmployeeId == id)
                 .ToListAsync();
-            
+             
             ViewBag.Employee = employee;
             ViewBag.Assignments = assignments;
             
@@ -263,12 +263,68 @@ namespace TaskManager.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveTaskFromEmployee(int assignmentId, int employeeId)
         {
+            if (!IsAdminAuthenticated())
+            {
+                return RedirectToAction("EnterPinScreen");
+            }
+
             var assignment = await _context.TaskAssignments.FindAsync(assignmentId);
             if (assignment != null)
             {
                 _context.TaskAssignments.Remove(assignment);
                 await _context.SaveChangesAsync();
             }
+            
+            return RedirectToAction("EditEmployee", new { id = employeeId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ClearAllTasksFromEmployee(int employeeId)
+        {
+            if (!IsAdminAuthenticated())
+            {
+                return RedirectToAction("EnterPinScreen");
+            }
+
+            var assignments = await _context.TaskAssignments
+                .Where(ta => ta.EmployeeId == employeeId)
+                .ToListAsync();
+            
+            _context.TaskAssignments.RemoveRange(assignments);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction("EditEmployee", new { id = employeeId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignAllTasksToEmployee(int employeeId)
+        {
+            if (!IsAdminAuthenticated())
+            {
+                return RedirectToAction("EnterPinScreen");
+            }
+
+            var allTasks = await _context.Tasks.ToListAsync();
+            var existingAssignments = await _context.TaskAssignments
+                .Where(ta => ta.EmployeeId == employeeId)
+                .Select(ta => ta.TaskId)
+                .ToListAsync();
+
+            foreach (var task in allTasks)
+            {
+                if (!existingAssignments.Contains(task.Id))
+                {
+                    var assignment = new TaskAssignment
+                    {
+                        TaskId = task.Id,
+                        EmployeeId = employeeId,
+                        Status = "Not Started"
+                    };
+                    _context.TaskAssignments.Add(assignment);
+                }
+            }
+            
+            await _context.SaveChangesAsync();
             
             return RedirectToAction("EditEmployee", new { id = employeeId });
         }

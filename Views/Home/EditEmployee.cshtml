@@ -67,6 +67,18 @@
                 </select>
                 <button type="submit" class="btn btn-primary">Assign Task</button>
             </form>
+            
+            <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                <form method="post" action="/Home/ClearAllTasksFromEmployee" style="display: inline;">
+                    <input type="hidden" name="employeeId" value="@employee.Id" />
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove all tasks from this employee?');">Clear All Tasks</button>
+                </form>
+                
+                <form method="post" action="/Home/AssignAllTasksToEmployee" style="display: inline;">
+                    <input type="hidden" name="employeeId" value="@employee.Id" />
+                    <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to assign all available tasks to this employee?');">Assign All Tasks</button>
+                </form>
+            </div>
         }
         else
         {
